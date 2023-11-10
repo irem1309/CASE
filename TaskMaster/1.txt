@@ -1,0 +1,16 @@
+# app/controllers/mock_taskmaster_controller.rb
+class MockTaskmasterController < ApplicationController
+ def fetch_tasks
+    # Replace with your own data or fetch it from a service
+    data = {
+      user: { id: 1, name: 'John Doe', email: 'john.doe@example.com' },
+      tasks: [
+        { id: 1, title: 'Task 1', due_date: '2022-01-01', user_id: 1 },
+        { id: 2, title: 'Task 2', due_date: '2022-01-02', user_id: 1 },
+        { id: 3, title: 'Task 3', due_date: '2022-01-03', user_id: 1 }
+      ]
+    }
+
+    render json: data
+ end
+end

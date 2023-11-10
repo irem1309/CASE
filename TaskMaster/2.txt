@@ -1,0 +1,4 @@
+# config/routes.rb
+Rails.application.routes.draw do
+ get 'mock_taskmaster/fetch_tasks', to: 'mock_taskmaster#fetch_tasks'
+end

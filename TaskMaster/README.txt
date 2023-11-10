@@ -1,0 +1,3 @@
+whenever you enqueue a new SyncJob, it will attempt to sync the data for the specified user. If any errors occur during the process, it will retry the job up to 3 times before finally logging the error and moving on. The log messages provide detailed information about the sync process, which can be helpful for debugging and monitoring purposes.
+
+Codes found in sixth notebook includes Sidekiq's Worker module, sets up retry logic to attempt fetching the TaskMaster 3 times if it fails, and includes logging of errors if the fetch fails after 3 retries.

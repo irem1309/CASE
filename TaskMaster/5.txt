@@ -1,0 +1,15 @@
+# app/jobs/start_sync_job.rb
+class StartSyncJob < ApplicationJob
+ queue_as :default
+
+ def perform(user_id)
+    # Fetch data from TaskMaster
+    # taskmaster_tasks = ...
+
+    # For each taskmaster_task
+    taskmaster_tasks.each do |taskmaster_task|
+      # Check if the task already exists
+      existing_task = Task.find_by(id: taskmaster_task[:id])
+
+      # If the task doesn't exist, create it
+      if

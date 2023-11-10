@@ -1,0 +1,26 @@
+# app/controllers/api/v1/tasks_controller.rb
+module Api
+ module V1
+    class TasksController < ApplicationController
+      def start_sync
+        user_id = params[:user_id]
+        if user_id.present?
+          StartSyncJob.perform_later(user_id)
+          render json: { status: 'SUCCESS', message: 'Sync initiated in the background', data: {} }, status: :ok
+        else
+          render json: { status: 'ERROR', message: 'Invalid or missing user_id', data: {} }, status: :unprocessable_entity
+        end
+      end
+
+      def get_tasks
+        user_id = params[:user_id]
+        if user_id.present?
+          tasks = Task.where(user_id: user_id)
+          render json: { status: 'SUCCESS', message: 'Tasks fetched', data: tasks }, status: :ok
+        else
+          render json: { status: 'ERROR', message: 'Invalid or missing user_id', data: {} }, status: :unprocessable_entity
+        end
+      end
+    end
+ end
+end

@@ -1,0 +1,13 @@
+class TaskMasterFetcherWorker
+ include Sidekiq::Worker
+ sidekiq_options retry: 3
+
+ def perform(task_master_url)
+    response = HTTParty.get(task_master_url)
+    raise 'TaskMaster Fetch Failed' unless response.code == 200
+    # ... handle response data
+ rescue => e
+    Sidekiq.logger.error "Failed to fetch task master: #{e.message}"
+    raise e if retries_exhausted?
+ end
+end

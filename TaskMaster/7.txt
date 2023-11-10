@@ -1,0 +1,29 @@
+# app/jobs/sync_job.rb
+class SyncJob < ApplicationJob
+ queue_as :default
+
+ def perform(user_id)
+    Rails.logger.info "Starting sync for user #{user_id}"
+
+    begin
+      # Fetch tasks from TaskMaster API
+      response = HTTParty.get("https://taskmaster.com/api/tasks/#{user_id}")
+
+      # Handle any errors during the fetch
+      raise HTTParty::ResponseError.new("HTTP Request failed") unless response.code == 200
+
+      # Log the number of tasks fetched
+      Rails.logger.info "Fetched #{response.count} tasks for user #{user_id}"
+
+      # ... perform your data processing tasks here ...
+
+    rescue StandardError => e
+      Rails.logger.error "Error occurred during sync for user #{user_id}: #{e.message}"
+
+      # Retry the job 3 times if the fetch from TaskMaster fails
+      self.class.perform_later(user_id) if attempts < 3
+    end
+
+    Rails.logger.info "Completed sync for user #{user_id}"
+ end
+end
